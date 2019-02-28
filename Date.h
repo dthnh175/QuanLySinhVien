@@ -18,5 +18,5 @@ public:
 	Returns < 0 if this date is before date2
 	Returns > 0 if this date is after date2
 	*/
-	int compare(Date date2);
+	int compare(Date * date2);
 };
