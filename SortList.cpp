@@ -3,6 +3,7 @@
 #include <iostream>
 #include <conio.h>
 #include "console.h"
+#include "PrintList.h"
 
 void sortList(StudentList * list)
 {
@@ -35,6 +36,9 @@ void sortList(StudentList * list)
 				{
 					//sort the list with the chosen field and algorithm
 					sortList(list, sortField, sortAlgo);
+
+					//print the list after sorting
+					drawTable(list->getFirstNode());
 				}
 			} while (sortAlgo != sortAlgoMenu->getMenuSize() - 1);
 		}
@@ -122,59 +126,118 @@ void selectionSort(StudentList * list, SortField sortField)
 		return;
 	}
 
-	for (size_t i = 0; i < list->getSize(); i++)
+	switch (sortField)
 	{
-		size_t minIndex = i;
-		for (size_t j = i; j < list->getSize(); j++)
+	case SortField::NAME:	//sort by name
+	{
+		for (size_t i = 0; i < list->getSize(); i++)
 		{
-			switch (sortField)
+			size_t minIndex = i;
+			for (size_t j = i; j < list->getSize(); j++)
 			{
-			case SortField::NAME:	//sort by name
-			{
-				if (students[minIndex]->getFullName().compare(students[j]->getFullName()) > 0)
+				std::string firstName1 = students[minIndex]->getFirstName();
+				std::string firstName2 = students[j]->getFirstName();
+
+				//compare first names
+				if (firstName1.compare(firstName2) > 0)
 				{
 					minIndex = j;
 				}
-				break;
+				else if (firstName1.compare(firstName2) == 0)
+				{
+					std::string lastName1 = students[minIndex]->getLastName();
+					std::string lastName2 = students[j]->getLastName();
+
+					//if two first names are the same then compare last names
+					if (lastName1.compare(lastName2) > 0)
+					{
+						minIndex = j;
+					}
+				}
 			}
-			case SortField::STUDENT_ID:	//sort by studentID
+			if (minIndex != i)
+			{
+				swap(&students[minIndex], &students[i]);
+			}
+		}
+		break;
+	}
+	case SortField::STUDENT_ID:	//sort by studentID
+	{
+		for (size_t i = 0; i < list->getSize(); i++)
+		{
+			size_t minIndex = i;
+			for (size_t j = i; j < list->getSize(); j++)
 			{
 				if (students[minIndex]->getStudentID().compare(students[j]->getStudentID()) > 0)
 				{
 					minIndex = j;
 				}
-				break;
 			}
-			case SortField::STUDY_CLASS:	//sort by studyClass
+			if (minIndex != i)
+			{
+				swap(&students[minIndex], &students[i]);
+			}
+		}
+		break;
+	}
+	case SortField::STUDY_CLASS:	//sort by studyClass
+	{
+		for (size_t i = 0; i < list->getSize(); i++)
+		{
+			size_t minIndex = i;
+			for (size_t j = i; j < list->getSize(); j++)
 			{
 				if (students[minIndex]->getStudyClass().compare(students[j]->getStudyClass()) > 0)
 				{
 					minIndex = j;
 				}
-				break;
 			}
-			case SortField::DATE_OF_BIRTH:	//sort by DOB
+			if (minIndex != i)
+			{
+				swap(&students[minIndex], &students[i]);
+			}
+		}
+		break;
+	}
+	case SortField::DATE_OF_BIRTH:	//sort by DOB
+	{
+		for (size_t i = 0; i < list->getSize(); i++)
+		{
+			size_t minIndex = i;
+			for (size_t j = i; j < list->getSize(); j++)
 			{
 				if (students[minIndex]->getDateOfBirth()->compare(students[j]->getDateOfBirth()) > 0)
 				{
 					minIndex = j;
 				}
-				break;
 			}
-			case SortField::GPA:	//sort by GPA
+			if (minIndex != i)
+			{
+				swap(&students[minIndex], &students[i]);
+			}
+		}
+		break;
+	}
+	case SortField::GPA:	//sort by GPA
+	{
+		for (size_t i = 0; i < list->getSize(); i++)
+		{
+			size_t minIndex = i;
+			for (size_t j = i; j < list->getSize(); j++)
 			{
 				if (students[minIndex]->getGPA() > students[j]->getGPA())
 				{
 					minIndex = j;
 				}
-				break;
 			}
+			if (minIndex != i)
+			{
+				swap(&students[minIndex], &students[i]);
 			}
 		}
-		if (minIndex != i)
-		{
-			swap(&students[minIndex], &students[i]);
-		}
+		break;
+	}
 	}
 
 	Node * firstNode = new Node(students[0]);
@@ -191,6 +254,7 @@ void selectionSort(StudentList * list, SortField sortField)
 
 void insertionSort(StudentList * list, SortField sortField)
 {
+
 }
 
 void quickSort(StudentList * list, SortField sortField)
