@@ -42,7 +42,7 @@ void printList(StudentList * list)
 void printStudyClass(StudentList * list)
 {
 	//sort list by study class
-	selectionSortStudyClass(list);
+	selectionSort(list, SortField::STUDY_CLASS);
 	//print each class
 	TextColor(ColorCode_DarkBlue);
 	std::cout << "In danh sach sinh vien theo lop: ";

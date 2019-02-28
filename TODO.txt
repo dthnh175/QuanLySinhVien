@@ -96,3 +96,6 @@
 
 27/2/19
 	* something wrong with editing and deleting student, again. something like memcpy. Caused by: fileName not read.	//solved
+
+28/2/19
+	* finish the second SortList() function.
