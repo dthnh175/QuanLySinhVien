@@ -18,7 +18,6 @@ Student::Student(std::string fullName, std::string studentID, std::string studyC
 	this->dateOfBirth = new Date(day, month, year);
 	this->GPA = GPA;
 
-	//filename = <studentID>.dat
 	makeFileName();
 }
 
@@ -30,7 +29,6 @@ Student::Student(Name * name, std::string studentID, std::string studyClass, Dat
 	this->dateOfBirth = dob;
 	this->GPA = GPA;
 
-	//filename = <studentID>.dat
 	makeFileName();
 }
 
@@ -206,7 +204,6 @@ void Student::writeToFile(std::string studentFilePath)
 	fileOut.write((char*)&studyClass, sizeof(std::string));
 	fileOut.write((char*)dateOfBirth, sizeof(Date));
 	fileOut.write((char*)&GPA, sizeof(double));
-	fileOut.write((char*)&fileName, sizeof(std::string));
 
 	//close file
 	fileOut.close();

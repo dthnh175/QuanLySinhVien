@@ -49,13 +49,16 @@ Menu * createPrintMenu()
 Menu * createSortFieldMenu()
 {
 	std::string menuTitle = "CHON TRUONG DE SAP XEP";
-	std::string keySortMenuItem[4] = {
+	const size_t menuSize = 6;
+	std::string keySortMenuItem[menuSize] = {
 		"1. Ho ten",
-		"2. Ngay sinh",
-		"3. Diem Trung binh",
-		"4. Quay lai"
+		"2. Ma SV",
+		"3. Lop hoc",
+		"4. Ngay sinh",
+		"5. Diem Trung binh",
+		"6. Quay lai"
 	};
-	Menu * keySortMenu = new Menu(menuTitle, 4, keySortMenuItem);
+	Menu * keySortMenu = new Menu(menuTitle, menuSize, keySortMenuItem);
 	return keySortMenu;
 }
 

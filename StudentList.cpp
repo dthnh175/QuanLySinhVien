@@ -231,3 +231,17 @@ size_t StudentList::getSize()
 {
 	return this->listSize;
 }
+
+void StudentList::setFirstNode(Node * firstNode)
+{
+	this->firstNode = firstNode;
+
+	//count nodes
+	Node * temp = firstNode;
+	this->listSize = 0;
+	while (temp != NULL)
+	{
+		this->listSize++;
+		temp = temp->getNextNode();
+	}
+}

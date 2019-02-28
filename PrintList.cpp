@@ -4,6 +4,7 @@
 #include <iostream>
 #include <conio.h>
 #include "console.h"
+#include "SortList.h"
 
 void printList(StudentList * list)
 {
@@ -19,6 +20,7 @@ void printList(StudentList * list)
 		{
 		case 0:
 		{
+			printStudyClass(list);
 			break;
 		}
 			
@@ -40,8 +42,12 @@ void printList(StudentList * list)
 void printStudyClass(StudentList * list)
 {
 	//sort list by study class
-
+	selectionSortStudyClass(list);
 	//print each class
+	TextColor(ColorCode_DarkBlue);
+	std::cout << "In danh sach sinh vien theo lop: ";
+	TextColor(default_ColorCode);
+	printAllList(list);
 }
 
 void printAllList(StudentList * list)

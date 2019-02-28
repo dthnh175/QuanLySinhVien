@@ -27,4 +27,5 @@ public:
 	Student ** getStudentArray();
 	size_t getSize();
 
+	void setFirstNode(Node * firstNode);
 };
