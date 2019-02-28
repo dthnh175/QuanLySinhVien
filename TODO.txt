@@ -1,0 +1,98 @@
+23/1/19
+	* When returning from the child menu it takes two times pressing the arrow key to get to another line	//Solved
+	* write more functions like sortList(int) in ManagingMenu.h to make the main function easier to read
+
+24/1/19
+	* when returning from any child menu if we hits DOWN_ARROW it goes up, UP_ARROW it goes to the last line	//Solved
+	* when returning from any child menu if we instantly choose that line again it always show EditMenu			//Solved
+	Caused by:	in the "int Menu::getMenuItem()" we initiate the lineCursor = 0 at the beginning but after we hit GoBack from the child menu, we displayMenu(int) with the argument
+	itemSelected still equals the lineCursor from the last call. The itemSelected and lineCursor is different so when we hit UP or DOWN it becomes chaos.
+	Solution: in the "int Menu::getMenuItem()" function we should pass an argument as the current line and initiate the local lineCursor = currentLineCursor.
+
+29/1/19
+	* The solution for managing students:  (dont do this anymore)
+		data of the program:	C:\Users\DUY THANH\Documents\ThiKTLT\data\students	//dont do this anymore
+
+		addStudent(): 	create a new Student instance. Write that instance file into program's data folder.
+						naming convention:	<studentName>_<studentID> 
+											VuDuyThanh_12345678
+		editStudent(): 	display a menu of keys for searching. choose key to search
+							-	call linearSearch(), which returns a bunch of students that match the search result. 
+							-	those students then listed as a menu to choose.
+							-	create a class called StudentMenu.
+						choose student to edit info.
+		deleteStudent():display a menu of study classes. the user chooses the class which holds the student to edit info. 
+						display a menu of students. the user chooses student to delete.
+
+8/2/19
+	* (not an error or a TODO) The .cpp files must have the 'stdafx.h' file included at the very first line of the file.
+	* the DATA_PATH should be in the same folder with the .exe file (even when it's copied to another computer it still works).
+	* the nameCheck() function not working properly.	//solved
+	* complete the StudentList() constructor.
+	* write objects to foler inside the folder of the .exe
+
+9/2/19
+	* Student::getFullName() not working properly			//solved
+	* GPA sets to zero when assigned into Student object.	//solved
+
+10/2/19
+	* dateCheck(std::string inputString) not working properly. If enter 12345 or 12/3/456 then program stops.	//solved
+	* Need a function like correctName(std::string fullName)	: if enter vU dUy thAnH then the string will be Vu Duy Thanh. //solved
+	* Need to improve correctName(std::string fullName)			: if enter "   vU   dUy thAnH   " then it returns Vu Duy Thanh	//solved
+
+12/2/19
+	* When debugging after entering new student, if we immediately add another new student the program throws Debug assertion failed (string subscript out of range).
+	  When running release version after entering new student, if we immediately add another new student the program prints out no input string but after that 
+	  we can add new student as usual.	//solved
+
+14/2/19
+	* update List.txt when add a new student.
+	* create a data folder inside the exe folder and write dat files into that file.	//solved
+
+15/2/19
+	* we dont need to edit List.txt every time we edit the list anymore. Every time we open the "StudentsData" folder we use system("dir /B *.dat > List.txt") to read all
+	the filenames then delete List.txt after we done.	//solved
+	* finish reading-from-file function	//solved
+
+16/2/19
+	* (NOTE) when we write an object of a class to a BIN file or when we read data from a BIN file to an object, if our user-define class has another user-define class inside,
+	we have to write our own read() and write() functions. Example: https://stackoverflow.com/questions/37038909/c-read-write-class-from-to-binary-file
+	* rewrite the writeToFile() function in class Student using the method in the link above.	//solved
+
+17/2/19
+	* test reading from multiple files, check the appendToList() function.	//solved
+
+18/2/19
+	* search list with linearSearch().
+	* finish linearSearch() functions.
+
+21/2/19
+	* in function createSearchResultMenu(): the array *result not created.	//solved
+	* check if studentID exists in the list.
+	* after edit student name, when reprint the menu it doesnt print "Ho ten	|"	//solved
+
+22/2/19
+	* when the program cannot find the student with the keyword, it doesnt go back.	//solved
+	* search the list using regex with non case sensitive flag //solved
+	* finish all linearSearch functions.	//solved
+	* finish the new chooseStudent() function	//dont do it anymore. too expensive
+
+23/2/19
+	* fix all linearSearch functions.	//solved
+	* finish all searchField cases.		//solved
+	* when searching for student, if not found and we hit not-enter key then the program crashes (the debugger says it's because of some func returns NULL Node object).	//solved
+	* write the delete and update file later.
+	* if we delete the student at the first of the list or the second student then the program crashes. may be it's caused by something the Linked list.	//solved
+	* now we can delete the second student in the list but cannot delete the first.	//solved
+
+24/2/19
+	* after we delete the last student in the list, it automatically comes back to the previous menu.
+	* sort students by name before printing.
+	* (BIG BIG MISTAKE) class StudentList should have done all the add student, edit student info, delete student and everything else. The declaration functions in other CPP files.	//no need
+
+25/2/19
+	* rewrite read from file function in class Student.	//no need
+	* console cannot print out ascii extended code.	//solved
+
+27/2/19
+	* something wrong with editing and deleting student, again. something like memcpy. Caused by: fileName not read.	//solved
