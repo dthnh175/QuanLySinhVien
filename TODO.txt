@@ -99,3 +99,6 @@
 
 28/2/19
 	* finish the second SortList() function.
+
+1/3/19
+	* cannot read from file the name that has over 15 characters. Solution: rewrite the write to file and read from file functions.
