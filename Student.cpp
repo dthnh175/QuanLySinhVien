@@ -95,6 +95,11 @@ void Student::makeFileName()
 	this->fileName.append(".dat");
 }
 
+Name * Student::getName()
+{
+	return this->name;
+}
+
 std::string Student::getFullName()
 {
 	return this->name->getFullName();
@@ -158,6 +163,14 @@ void Student::setDateOfBirth(int date, int month, int year)
 void Student::setGPA(double GPA)
 {
 	this->GPA = GPA;
+}
+
+/*	Returns 0 if two names have the same firstName and lastName
+	Returns < 0 if this name is alphabetically before anotherName
+	Returns > 0 if this date is alphabetically after anotherName*/
+int Student::compareName(Student * anotherStudent)
+{
+	return this->name->compare(anotherStudent->getName());
 }
 
 std::string Student::toString()
