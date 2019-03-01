@@ -17,7 +17,6 @@ private:
 	void makeFileName();
 public:
 	//constructors
-
 	Student();
 	Student(std::string name, std::string studentID, std::string studyClass, int day, int month, int year, double GPA);
 	Student(Name * name, std::string studentID, std::string studyClass, Date * dob, double GPA);
@@ -35,7 +34,6 @@ public:
 	std::string getFileName();
 
 	//setters
-
 	void setName(std::string);
 	void setStudentID(std::string studentID);
 	void setStudyClass(std::string studyClass);
