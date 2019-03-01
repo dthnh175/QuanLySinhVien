@@ -254,6 +254,47 @@ void selectionSort(StudentList * list, SortField sortField)
 
 void insertionSort(StudentList * list, SortField sortField)
 {
+	Student ** studentArr = list->getStudentArray();
+
+	//if studentArr is empty
+	if (studentArr == NULL)
+	{
+		std::cout << "Danh sach rong. Nhan phim bat ky de quay lai . . .";
+		_getch();
+		return;
+	}
+
+	//if list has only one element
+	if (list->getSize() == 1)
+	{
+		return;
+	}
+
+	switch (sortField)
+	{
+	case SortField::NAME:
+	{
+		for (size_t i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			size_t correctPosition = i;
+
+			while (correctPosition > 0 && studentArr[correctPosition]->compareName(studentArr[i]) > 0)
+			{
+				correctPosition--;
+			}
+
+			if (correctPosition != i)
+			{
+				swap(&studentArr[correctPosition], &studentArr[i]);
+			}
+		}
+
+		break;
+	}
+
+	}
+
 
 }
 
