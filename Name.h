@@ -13,4 +13,6 @@ public:
 	std::string getFullName();
 	std::string getFirstName();
 	std::string getLastName();
+
+	int compare(Name * anotherName);
 };

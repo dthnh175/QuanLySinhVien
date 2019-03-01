@@ -42,3 +42,31 @@ std::string Name::getLastName()
 {
 	return this->lastName;
 }
+
+/*	Returns 0 if two names have the same firstName and lastName
+	Returns < 0 if this name is alphabetically before anotherName
+	Returns > 0 if this date is alphabetically after anotherName*/
+int Name::compare(Name * anotherName)
+{
+	if ((this->firstName).compare(anotherName->getFirstName()) < 0)
+	{
+		return -1;
+	}
+	else if ((this->firstName).compare(anotherName->getFirstName()) > 0)
+	{
+		return 1;
+	}
+	else if ((this->firstName).compare(anotherName->getFirstName()) == 0)
+	{
+		if ((this->lastName).compare(anotherName->getLastName()) < 0)
+		{
+			return -1;
+		}
+		else if ((this->lastName).compare(anotherName->getLastName()) > 0)
+		{
+			return 1;
+		}
+	}
+
+	return 0;
+}
