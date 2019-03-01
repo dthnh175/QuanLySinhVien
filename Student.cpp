@@ -45,21 +45,40 @@ Student::Student(std::string filepath)
 
 	//read each member of Student in binary file
 
+	char* data;
+	size_t size;
+
 	//read name
-	this->name = new Name();
-	file.read((char*)this->name, sizeof(Name));
+	file.read((char*)&size, sizeof(size_t));
+	data = new char[size + 1];
+	file.read(data, size);
+	data[size] = '\0';
+	std::string fullname = data;
+	this->name = new Name(fullname);
+	delete data;
 
 	//read studentID
-	this->studentID = "";
-	file.read((char*)&(this->studentID), sizeof(std::string));
+	file.read((char*)&size, sizeof(size_t));
+	data = new char[size + 1];
+	file.read(data, size);
+	data[size] = '\0';
+	this->studentID = data;
+	delete data;
 
 	//read studyClass
-	this->studyClass = "";
-	file.read((char*)&(this->studyClass), sizeof(std::string));
+	file.read((char*)&size, sizeof(size_t));
+	data = new char[size + 1];
+	file.read(data, size);
+	data[size] = '\0';
+	this->studyClass = data;
+	delete data;
 
 	//read Date
-	this->dateOfBirth = new Date();
-	file.read((char*)(this->dateOfBirth), sizeof(Date));
+	int day, month, year;
+	file.read((char*)&day, sizeof(int));
+	file.read((char*)&month, sizeof(int));
+	file.read((char*)&year, sizeof(int));
+	this->dateOfBirth = new Date(day, month, year);
 
 	//read GPA
 	this->GPA;
@@ -212,10 +231,31 @@ void Student::writeToFile(std::string studentFilePath)
 	}
 
 	//write each class member to file
-	fileOut.write((char*)name, sizeof(Name));
-	fileOut.write((char*)&studentID, sizeof(std::string));
-	fileOut.write((char*)&studyClass, sizeof(std::string));
-	fileOut.write((char*)dateOfBirth, sizeof(Date));
+
+	//write name to file
+	size_t size = this->name->getFullName().size();
+	fileOut.write((char*)&size, sizeof(size_t));
+	fileOut.write((char*)this->name->getFullName().c_str(), size);
+
+	//write studentID to file
+	size = this->studentID.size();
+	fileOut.write((char*)&size, sizeof(size_t));
+	fileOut.write((char*)this->studentID.c_str(), size);
+
+	//write studyClass to file
+	size = this->studyClass.size();
+	fileOut.write((char*)&size, sizeof(size_t));
+	fileOut.write((char*)this->studyClass.c_str(), size);
+
+	//write date of birth to file
+	int day = this->dateOfBirth->getDay(),
+		month = this->dateOfBirth->getMonth(),
+		year = this->dateOfBirth->getYear();
+	fileOut.write((char*)&day, sizeof(int));
+	fileOut.write((char*)&month, sizeof(int));
+	fileOut.write((char*)&year, sizeof(int));
+
+	//write GPA to file
 	fileOut.write((char*)&GPA, sizeof(double));
 
 	//close file
