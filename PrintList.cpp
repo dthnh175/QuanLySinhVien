@@ -8,6 +8,15 @@
 
 void printList(StudentList * list)
 {
+	if (list->isEmpty())
+	{
+		TextColor(ColorCode_DarkRed);
+		std::cout << "\n**Danh sach rong. Nhan phim bat ky de quay lai. . .";
+		TextColor(default_ColorCode);
+		_getch();
+		return;
+	}
+
 	Menu * printMenu = createPrintMenu();
 	int itemSelected = 0;
 

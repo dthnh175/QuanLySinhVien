@@ -1,12 +1,23 @@
 #include "stdafx.h"
 #include "SearchList.h"
 #include "ManagingMenu.h"
+#include "console.h"
 #include <iostream>
 #include <regex>
 #include <sstream>
+#include <conio.h>
 
 void searchList(StudentList * list)
 {
+	if (list->isEmpty())
+	{
+		TextColor(ColorCode_DarkRed);
+		std::cout << "\n**Danh sach rong. Nhan phim bat ky de quay lai. . .";
+		TextColor(default_ColorCode);
+		_getch();
+		return;
+	}
+
 	//	select field to search
 	Menu * searchFieldMenu = createSearchFieldMenu();
 	int searchField = 0;

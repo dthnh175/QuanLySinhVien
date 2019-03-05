@@ -9,8 +9,9 @@ void sortList(StudentList * list)
 {
 	if (list->isEmpty())
 	{
-		clrscr();
-		std::cout << "Danh sach sinh vien rong. Nhan phim bat ky de quay lai . . .";
+		TextColor(ColorCode_DarkRed);
+		std::cout << "\n**Danh sach rong. Nhan phim bat ky de quay lai. . .";
+		TextColor(default_ColorCode);
 		_getch();
 		return;
 	}
