@@ -71,7 +71,11 @@ void addNewStudent(StudentList * list)
 	std::cout << "\nThong tin cua sinh vien vua duoc nhap:" << std::endl;
 	TextColor(default_ColorCode);
 	newStudent->printInfo();
-	std::cout << "\nNhan phim bat ky de quay tro lai...";
+	TextColor(ColorCode_DarkBlue);
+	std::cout << "\n**Thong tin cua sinh vien duoc luu ra file " << newStudent->getFileName();
+	std::cout << " trong thu muc StudentsData.";
+	std::cout << "\n**Nhan phim bat ky de quay tro lai...";
+	TextColor(default_ColorCode);
 	_getch();	
 
 }
@@ -582,7 +586,7 @@ Student * enterStudentInfo(StudentList * list)
 
 	rewind(stdin);
 
-	TextColor(ColorCode_Cyan);
+	TextColor(ColorCode_Red);
 	std::cout << "NHAP THONG TIN SINH VIEN MOI" << std::endl << std::endl;
 	TextColor(default_ColorCode);
 
@@ -593,11 +597,7 @@ Student * enterStudentInfo(StudentList * list)
 		std::getline(std::cin, fullName);
 	} while (!nameCheck(fullName));
 	fullName = correctName(fullName);
-
-	clrscr();
-	TextColor(ColorCode_Cyan);
-	std::cout << "NHAP THONG TIN SINH VIEN MOI" << std::endl << std::endl;
-	TextColor(default_ColorCode);
+	gotoXY(0, whereY() - 1);
 	std::cout << "Nhap ho ten: " << fullName << std::endl;
 
 	//enter studentID until valid
@@ -610,6 +610,9 @@ Student * enterStudentInfo(StudentList * list)
 	//enter studyClass
 	std::cout << "Nhap ten lop hoc: ";
 	std::cin >> studyClass;
+	studyClass = correctStudyClass(studyClass);
+	gotoXY(0, whereY() - 1);
+	std::cout << "Nhap ten lop hoc: " << studyClass << std::endl;
 
 	//enter date of birth until valid
 	std::cout << "Nhap ngay sinh (dd/mm/yyyy): ";
@@ -753,6 +756,18 @@ std::string correctName(std::string inputString)
 		
 	}
 	return fullName;
+}
+
+std::string correctStudyClass(std::string inputString)
+{
+	for (size_t i = 0; i < inputString.length(); i++)
+	{
+		if ('a' <= inputString[i] && inputString[i] <= 'z')
+		{
+			inputString[i] = toupper(inputString[i]);
+		}
+	}
+	return inputString;
 }
 
 bool studentIDCheck(StudentList * list, std::string studentID)
@@ -940,7 +955,6 @@ void editStudentInfo(StudentList * list, Student * chosenStudent)
 					std::getline(std::cin, newName);
 				} while (!nameCheck(newName));
 				newName = correctName(newName);
-
 				chosenStudent->setName(newName);
 
 				std::string newMenuItem = "Ho ten		|";
@@ -956,7 +970,7 @@ void editStudentInfo(StudentList * list, Student * chosenStudent)
 
 				//enter new studentID until valid
 				TextColor(ColorCode_Pink);
-				std::cout << "\n**Nhap ma SV: ";
+				std::cout << "\n**Nhap ma SV moi: ";
 				TextColor(default_ColorCode);
 				do
 				{
@@ -981,7 +995,7 @@ void editStudentInfo(StudentList * list, Student * chosenStudent)
 				std::cout << "\n**Nhap ten lop hoc moi: ";
 				TextColor(default_ColorCode);
 				std::cin >> newStudyClass;
-
+				newStudyClass = correctStudyClass(newStudyClass);
 				chosenStudent->setStudyClass(newStudyClass);
 
 				std::string newMenuItem = "Lop hoc		|";
@@ -998,7 +1012,7 @@ void editStudentInfo(StudentList * list, Student * chosenStudent)
 
 				//enter date of birth until valid
 				TextColor(ColorCode_Pink);
-				std::cout << "\n**Nhap ngay sinh (dd/mm/yyyy): ";
+				std::cout << "\n**Nhap ngay sinh moi (dd/mm/yyyy): ";
 				TextColor(default_ColorCode);
 				do
 				{
@@ -1054,7 +1068,7 @@ void editStudentInfo(StudentList * list, Student * chosenStudent)
 
 				//enter GPA until valid
 				TextColor(ColorCode_Pink);
-				std::cout << "\n**Nhap diem trung binh tich luy: ";
+				std::cout << "\n**Nhap diem trung binh tich luy moi: ";
 				TextColor(default_ColorCode);
 				do
 				{
@@ -1081,9 +1095,15 @@ void editStudentInfo(StudentList * list, Student * chosenStudent)
 	//delete old file
 	deleteFile(oldFilePath);
 
-	//update list, write to file and List.txt
-	//writeToFile(list, chosenStudent);
+	//write new file to StudentsData folder
+	writeToFile(list, chosenStudent);
 
+}
+
+void reprintLine(std::string previousLine, std::string newInfo)
+{
+	gotoXY(0, whereY() - 1);
+	std::cout << previousLine << newInfo << std::endl;
 }
 
 void deleteStudent(StudentList * list, Student * chosenStudent)
@@ -1132,7 +1152,9 @@ void deleteFromLinkedList(Node ** firstNode, Student * student)
 /*Delete file at the specific filepath*/
 void deleteFile(std::string filepath)
 {
-
+	std::string command = "del ";
+	command.append(filepath);
+	system(command.c_str());
 }
 
 /*Write the object of class Student to a BIN file in "StudentsData" folder */
