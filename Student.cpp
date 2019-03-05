@@ -162,11 +162,13 @@ std::string Student::getFileName()
 void Student::setName(std::string fullName)
 {
 	this->name = new Name(fullName);
+	this->makeFileName();
 }
 
 void Student::setStudentID(std::string studentID)
 {
 	this->studentID = studentID;
+	this->makeFileName();
 }
 
 void Student::setStudyClass(std::string studyClass)
