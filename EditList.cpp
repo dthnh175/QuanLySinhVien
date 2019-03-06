@@ -53,7 +53,7 @@ void editList(StudentList * list, int editOption)
 
 /*	1. Enter new student info by enterStudentInfo(StudentList * list) function.
 	2. Write that student instance to file.
-	3. Upate List.txt*/
+	3. Update List.txt*/
 void addNewStudent(StudentList * list)
 {
 
@@ -104,6 +104,7 @@ void chooseAndEditStudent(StudentList * list)
 
 			switch (searchField)
 			{
+
 			case 0:	//search by name
 			{
 				std::string keyWord;				
@@ -283,6 +284,13 @@ void chooseAndEditStudent(StudentList * list)
 
 				} while (userChoice == 13);
 
+				break;
+			}
+
+			case 5:	//print all list
+			{
+				searchResult = list->getFirstNode();
+				searchResultMenu = createSearchResultMenu(searchResult);
 				break;
 			}
 
@@ -534,6 +542,12 @@ void chooseAndDeleteStudent(StudentList * list)
 				break;
 			}
 
+			case 5:	//print all list
+			{
+				searchResult = list->getFirstNode();
+				searchResultMenu = createSearchResultMenu(searchResult);
+				break;
+			}
 			//end of switch
 			}
 
@@ -558,9 +572,7 @@ void chooseAndDeleteStudent(StudentList * list)
 
 						//delete that student from the list, from searchResult and from searchResultMenu
 						deleteStudent(list, chosenStudent);
-						deleteFromLinkedList(&searchResult, chosenStudent);
 						searchResultMenu->deleteMenuItem(chosenStudentIndex);
-						std::cout << "";
 					}
 
 				} while (chosenStudentIndex != searchResultMenu->getMenuSize() - 1);
@@ -583,6 +595,7 @@ Student * enterStudentInfo(StudentList * list)
 	std::string dateOfBirth;
 	int day, month, year;
 	double GPA;
+	std::string filename;
 
 	rewind(stdin);
 
@@ -591,14 +604,21 @@ Student * enterStudentInfo(StudentList * list)
 	TextColor(default_ColorCode);
 
 	//enter full name until valid
-	std::cout << "Nhap ho ten: ";
+	std::string directive = "Nhap ho ten: ";
+	std::cout << directive;
 	do
 	{
 		std::getline(std::cin, fullName);
 	} while (!nameCheck(fullName));
+	size_t oldFullnameLength = fullName.length();
 	fullName = correctName(fullName);
-	gotoXY(0, whereY() - 1);
-	std::cout << "Nhap ho ten: " << fullName << std::endl;
+	gotoXY(directive.length(), whereY() - 1);
+	for (size_t i = 0; i < oldFullnameLength; i++)
+	{
+		std::cout << " ";
+	}
+	gotoXY(directive.length(), whereY());
+	std::cout << fullName << std::endl;
 
 	//enter studentID until valid
 	std::cout << "Nhap ma SV: ";
@@ -661,8 +681,14 @@ Student * enterStudentInfo(StudentList * list)
 		std::cin >> GPA;
 	} while (!gpaCheck(GPA));
 
+	//enter file name without file extension until valid
+	do
+	{
+		std::cout << "Nhap ten file (Khong can nhap phan mo rong file): ";
+		std::cin >> filename;
+	} while (!filenameCheck(list, filename));	
 
-	Student * student = new Student(fullName, studentID, studyClass, day, month, year, GPA);
+	Student * student = new Student(fullName, studentID, studyClass, day, month, year, GPA, filename);
 	
 	return student;
 }
@@ -800,7 +826,6 @@ bool studentIDCheck(StudentList * list, std::string studentID)
 		temp = temp->getNextNode();
 	}
 
-
 	return true;
 }
 
@@ -862,7 +887,7 @@ bool dateFormatCheck(std::string inputString)
 	return true;
 }
 
-/**	Check if input date is valid */
+/*	Check if input date is valid */
 bool dateCheck(int day, int month, int year)
 {
 	if (year < 1900 || year > 2016)
@@ -918,6 +943,25 @@ bool gpaCheck(double GPA)
 		std::cout << "Diem trung binh tich luy nhap sai. Nhap lai: ";
 		return false;
 	}
+	return true;
+}
+
+bool filenameCheck(StudentList * list, std::string filename)
+{
+	//Check if file has already existed in folder StudentsData
+	Node * temp = list->getFirstNode();
+	while (temp != NULL)
+	{
+		std::string currentFilename = temp->getStudent()->getFileName();
+		if (filename == currentFilename)
+		{
+			std::cout << "Ten file " << currentFilename << " da ton tai. Nhap lai: ";
+			return false;
+		}
+
+		temp = temp->getNextNode();
+	}
+
 	return true;
 }
 
@@ -1087,6 +1131,28 @@ void editStudentInfo(StudentList * list, Student * chosenStudent)
 				break;
 			}
 
+			case 5: //edit filename
+			{
+				std::string newFilename;
+
+				//enter new studentID until valid
+				TextColor(ColorCode_Pink);
+				std::cout << "\n**Nhap ten file moi (khong nhap phan duoi mo rong): ";
+				TextColor(default_ColorCode);
+				do
+				{
+					std::getline(std::cin, newFilename);
+				} while (!filenameCheck(list, newFilename));
+				newFilename.append(".dat");
+				chosenStudent->setFilename(newFilename);
+
+				std::string newMenuItem = "Ten file	|";
+				newMenuItem.append(chosenStudent->getFileName());
+				studentInfoMenu->setMenuItem(5, newMenuItem);
+
+				break;
+			}
+
 			//end of switch
 			}
 		}
@@ -1098,12 +1164,6 @@ void editStudentInfo(StudentList * list, Student * chosenStudent)
 	//write new file to StudentsData folder
 	writeToFile(list, chosenStudent);
 
-}
-
-void reprintLine(std::string previousLine, std::string newInfo)
-{
-	gotoXY(0, whereY() - 1);
-	std::cout << previousLine << newInfo << std::endl;
 }
 
 void deleteStudent(StudentList * list, Student * chosenStudent)

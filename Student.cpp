@@ -10,7 +10,7 @@ Student::Student()
 	//nothing
 }
 
-Student::Student(std::string fullName, std::string studentID, std::string studyClass, int day, int month, int year, double GPA)
+Student::Student(std::string fullName, std::string studentID, std::string studyClass, int day, int month, int year, double GPA, std::string filename)
 {
 	this->name = new Name(fullName);
 	this->studentID = studentID;
@@ -18,7 +18,8 @@ Student::Student(std::string fullName, std::string studentID, std::string studyC
 	this->dateOfBirth = new Date(day, month, year);
 	this->GPA = GPA;
 
-	makeFileName();
+	this->fileName = filename;
+	this->fileName.append(".dat");
 }
 
 Student::Student(Name * name, std::string studentID, std::string studyClass, Date * dob, double GPA)
@@ -186,12 +187,66 @@ void Student::setGPA(double GPA)
 	this->GPA = GPA;
 }
 
+void Student::setFilename(std::string filename)
+{
+	this->fileName = filename;
+}
+
 /*	Returns 0 if two names have the same firstName and lastName
 	Returns < 0 if this name is alphabetically before anotherName
 	Returns > 0 if this date is alphabetically after anotherName*/
 int Student::compareName(Student * anotherStudent)
 {
 	return this->name->compare(anotherStudent->getName());
+}
+
+/*	Returns < 0 if this ID is alphabetically before another ID.
+	Returns > 0 if this ID is alphabetically after another ID.*/
+int Student::compareStudentID(Student * anotherStudent)
+{
+	return this->studentID.compare(anotherStudent->getStudentID());
+}
+
+/*	Returns 0 if two student have the same studyClass and same name
+*	Returns < 0 if this studyClass is alphabetically before another student studyClass
+*	Returns > 0 if this studyClass is alphabetically after another student's studyClass*/
+int Student::compareStudyClass(Student * anotherStudent)
+{
+	if (this->studyClass.compare(anotherStudent->getStudyClass()) == 0)
+	{
+		return this->compareName(anotherStudent);
+	}
+
+	return this->studyClass.compare(anotherStudent->getStudyClass());
+}
+
+/*	Returns 0 if two student have the same DOB and same name
+*	Returns < 0 if this student's DOB is before another student's DOB
+*	Returns > 0 if this student's DOB is after another student's DOB*/
+int Student::compareDateOfBirth(Student * anotherStudent)
+{
+	if (this->dateOfBirth->compare(anotherStudent->getDateOfBirth()) == 0)
+	{
+		return this->compareName(anotherStudent);
+	}
+
+	return this->dateOfBirth->compare(anotherStudent->getDateOfBirth());
+}
+
+/*	Returns 0 if two student have the same GPA and same name
+*	Returns < 0 if this GPA is less than another student studyClass
+*	Returns > 0 if this GPA is greater than another student's studyClass*/
+int Student::compareGPA(Student * anotherStudent)
+{
+	if (this->GPA == anotherStudent->getGPA())
+	{
+		return this->compareName(anotherStudent);
+	}
+	if (this->GPA < anotherStudent->getGPA())
+	{
+		return -1;
+	}
+	return 1;
 }
 
 std::string Student::toString()

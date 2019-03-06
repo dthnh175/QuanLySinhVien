@@ -182,6 +182,7 @@ void StudentList::deleteStudent(Student * student)
 
 	}
 	temp->setNextNode(temp->getNextNode()->getNextNode());
+	this->listSize--;
 }
 
 /*Update List.txt after adding or deleting students*/

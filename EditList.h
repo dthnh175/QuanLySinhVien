@@ -19,10 +19,9 @@ bool studentIDCheck(StudentList * list, std::string studentID);
 bool dateFormatCheck(std::string inputString);
 bool dateCheck(int day, int month, int year);
 bool gpaCheck(double GPA);
+bool filenameCheck(StudentList * list, std::string filename);
 
 void editStudentInfo(StudentList * list, Student * chosenStudent);
-
-void reprintLine(std::string previousLine, std::string newInfo);
 
 void deleteStudent(StudentList * list, Student * chosenStudent);
 void deleteFromLinkedList(Node ** firstNode, Student * student);
