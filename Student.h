@@ -18,19 +18,19 @@ private:
 public:
 	//constructors
 	Student();
-	Student(std::string name, std::string studentID, std::string studyClass, int day, int month, int year, double GPA);
+	Student(std::string name, std::string studentID, std::string studyClass, int day, int month, int year, double GPA, std::string filename);
 	Student(Name * name, std::string studentID, std::string studyClass, Date * dob, double GPA);
 	Student(std::string filePath);
 
 	//getters
-	Name * getName();
+	Name *		getName();
 	std::string getFullName();
 	std::string getFirstName();
 	std::string getLastName();
 	std::string getStudentID();
 	std::string getStudyClass();
-	Date * getDateOfBirth();
-	double getGPA();
+	Date *		getDateOfBirth();
+	double		getGPA();
 	std::string getFileName();
 
 	//setters
@@ -39,11 +39,14 @@ public:
 	void setStudyClass(std::string studyClass);
 	void setDateOfBirth(int date, int month, int year);
 	void setGPA(double GPA);
+	void setFilename(std::string filename);
 
-	/*Returns 0 if two names have the same firstName and lastName.
-	 Returns < 0 if this name is alphabetically before anotherName.
-	 Returns > 0 if this date is alphabetically after anotherName.*/
+	//comparing functions
 	int compareName(Student * anotherStudent);
+	int compareStudentID(Student * anotherStudent);
+	int compareStudyClass(Student * anotherStudent);
+	int compareDateOfBirth(Student * anotherStudent);
+	int compareGPA(Student * anotherStudent);
 
 	std::string toString();
 	void printInfo();
