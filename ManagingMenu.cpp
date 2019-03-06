@@ -80,14 +80,15 @@ Menu * createSortAlgoMenu()
 Menu * createSearchFieldMenu()
 {
 	std::string menuTitle = "CHON TRUONG DE TIM KIEM SINH VIEN";
-	const int menuSize = 6;
+	const int menuSize = 7;
 	std::string searchFieldMenuItem[menuSize] = {
 		"1. Ho ten",
 		"2. Ma SV",
 		"3. Ngay sinh",
 		"4. Diem Trung binh",
 		"5. Lop",
-		"6. Quay lai"
+		"6. In toan bo danh sach",
+		"7. Quay lai"
 	};
 	Menu * searchFieldMenu = new Menu(menuTitle, menuSize, searchFieldMenuItem);
 	return searchFieldMenu;
@@ -131,9 +132,8 @@ Menu * createStudentInfoMenu(Student * student)
 {
 	std::string title = "SINH VIEN ";
 	title.append(student->getFullName());
-	title.append("\n");
 
-	const int menuSize = 6;
+	const int menuSize = 7;
 	std::string * menuItem = new std::string[menuSize];
 	menuItem[0] = "Ho ten		|";
 	menuItem[0].append(student->getFullName());
@@ -147,7 +147,9 @@ Menu * createStudentInfoMenu(Student * student)
 	std::ostringstream oss;
 	oss << student->getGPA();
 	menuItem[4].append(oss.str());
-	menuItem[5] = "Quay lai";
+	menuItem[5] = "Ten file	|";
+	menuItem[5].append(student->getFileName());
+	menuItem[6] = "Quay lai";
 
 	Menu * studentInfo = new Menu(title, menuSize, menuItem);
 
