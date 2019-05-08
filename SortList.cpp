@@ -118,11 +118,23 @@ void swap(Student ** student1, Student ** student2)
 
 void selectionSort(StudentList * list, SortField sortField)
 {
+	if (list->isEmpty())
+	{
+		std::cout << "Danh sach sinh vien rong. Nhan phim bat ky de quay lai.";
+		_getch();
+		return;
+	}
+
+	if (list->getSize() == 1)
+	{
+		return;
+	}
+
 	Student ** students = list->getStudentArray();
 
 	if (students == NULL)
 	{
-		std::cout << "Mang sinh vien rong. Nhan phim bat ky de quay lai.";
+		std::cout << "Danh sach sinh vien rong. Nhan phim bat ky de quay lai.";
 		_getch();
 		return;
 	}
@@ -136,24 +148,9 @@ void selectionSort(StudentList * list, SortField sortField)
 			size_t minIndex = i;
 			for (size_t j = i; j < list->getSize(); j++)
 			{
-				std::string firstName1 = students[minIndex]->getFirstName();
-				std::string firstName2 = students[j]->getFirstName();
-
-				//compare first names
-				if (firstName1.compare(firstName2) > 0)
+				if (students[minIndex]->compareName(students[j]) > 0)
 				{
 					minIndex = j;
-				}
-				else if (firstName1.compare(firstName2) == 0)
-				{
-					std::string lastName1 = students[minIndex]->getLastName();
-					std::string lastName2 = students[j]->getLastName();
-
-					//if two first names are the same then compare last names
-					if (lastName1.compare(lastName2) > 0)
-					{
-						minIndex = j;
-					}
 				}
 			}
 			if (minIndex != i)
@@ -255,10 +252,7 @@ void selectionSort(StudentList * list, SortField sortField)
 
 void insertionSort(StudentList * list, SortField sortField)
 {
-	Student ** studentArr = list->getStudentArray();
-
-	//if studentArr is empty
-	if (studentArr == NULL)
+	if (list->isEmpty())
 	{
 		std::cout << "Danh sach rong. Nhan phim bat ky de quay lai . . .";
 		_getch();
@@ -271,23 +265,152 @@ void insertionSort(StudentList * list, SortField sortField)
 		return;
 	}
 
+	Student ** studentArr = list->getStudentArray();
+	//if studentArr is empty
+	if (studentArr == NULL)
+	{
+		std::cout << "Danh sach rong. Nhan phim bat ky de quay lai . . .";
+		_getch();
+		return;
+	}
+
 	switch (sortField)
 	{
 	case SortField::NAME:
 	{
-		for (size_t i = 1; i < list->getSize(); i++)
+		for (int i = 1; i < list->getSize(); i++)
 		{
 			//find the correct position of the student at position i
-			size_t correctPosition = i;
-
-			while (correctPosition > 0 && studentArr[correctPosition]->compareName(studentArr[i]) > 0)
+			Name currentName = studentArr[i]->getFullName();
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
 			{
-				correctPosition--;
+				if (currentName.compare(studentArr[j]->getName()) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
 			}
-
-			if (correctPosition != i)
+			if (j != i - 1)
 			{
-				swap(&studentArr[correctPosition], &studentArr[i]);
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::STUDENT_ID:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareStudentID(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::STUDY_CLASS:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareStudyClass(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::DATE_OF_BIRTH:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareDateOfBirth(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::GPA:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareGPA(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
 			}
 		}
 
@@ -299,16 +422,674 @@ void insertionSort(StudentList * list, SortField sortField)
 
 }
 
+int partition(Student** arr, int low, int high, SortField sortField)
+{
+	switch (sortField)
+	{
+	case SortField::NAME:
+	{
+		Student pivot = *(arr[high]);    // pivot 
+		int left = low;
+		int right = high - 1;
+
+		while (true)
+		{
+			while (left <= right && arr[left]->compareName(&pivot) < 0)
+			{
+				left++;
+			}
+			while (right >= left && arr[right]->compareName(&pivot) > 0)
+			{
+				right--;
+			}
+			if (left >= right) {
+				break;
+			}
+			swap(&arr[left], &arr[right]);
+			left++;
+			right--;
+		}
+		swap(&arr[left], &arr[high]);
+		return left;
+		break;
+	}
+
+	case SortField::STUDENT_ID:
+	{
+		Student pivot = *(arr[high]);    // pivot 
+		int left = low;
+		int right = high - 1;
+
+		while (true)
+		{
+			while (left <= right && arr[left]->compareStudentID(&pivot) < 0)
+			{
+				left++;
+			}
+			while (right >= left && arr[right]->compareStudentID(&pivot) > 0)
+			{
+				right--;
+			}
+			if (left >= right) {
+				break;
+			}
+			swap(&arr[left], &arr[right]);
+			left++;
+			right--;
+		}
+		swap(&arr[left], &arr[high]);
+		return left;
+		break;
+	}
+
+	case SortField::STUDY_CLASS:
+	{
+		Student pivot = *(arr[high]);    // pivot 
+		int left = low;
+		int right = high - 1;
+
+		while (true)
+		{
+			while (left <= right && arr[left]->compareStudyClass(&pivot) < 0)
+			{
+				left++;
+			}
+			while (right >= left && arr[right]->compareStudyClass(&pivot) > 0)
+			{
+				right--;
+			}
+			if (left >= right) {
+				break;
+			}
+			swap(&arr[left], &arr[right]);
+			left++;
+			right--;
+		}
+		swap(&arr[left], &arr[high]);
+		return left;
+		break;
+	}
+
+	case SortField::DATE_OF_BIRTH:
+	{
+		Student pivot = *(arr[high]);    // pivot 
+		int left = low;
+		int right = high - 1;
+
+		while (true)
+		{
+			while (left <= right && arr[left]->compareName(&pivot) < 0)
+			{
+				left++;
+			}
+			while (right >= left && arr[right]->compareName(&pivot) > 0)
+			{
+				right--;
+			}
+			if (left >= right) {
+				break;
+			}
+			swap(&arr[left], &arr[right]);
+			left++;
+			right--;
+		}
+		swap(&arr[left], &arr[high]);
+		return left;
+		break;
+	}
+
+	case SortField::GPA:
+	{
+		Student pivot = *(arr[high]);    // pivot 
+		int left = low;
+		int right = high - 1;
+
+		while (true)
+		{
+			while (left <= right && arr[left]->compareName(&pivot) < 0)
+			{
+				left++;
+			}
+			while (right >= left && arr[right]->compareName(&pivot) > 0)
+			{
+				right--;
+			}
+			if (left >= right) {
+				break;
+			}
+			swap(&arr[left], &arr[right]);
+			left++;
+			right--;
+		}
+		swap(&arr[left], &arr[high]);
+		return left;
+		break;
+	}
+
+	}
+
+}
+
+void quickSort(Student ** arr, int low, int high, SortField sortField)
+{
+	if (low < high)
+	{
+		int pi = partition(arr, low, high, sortField);	//partition index
+		quickSort(arr, low, pi - 1, sortField);
+		quickSort(arr, pi + 1, high, sortField);
+	}
+}
+
 void quickSort(StudentList * list, SortField sortField)
 {
+	if (list->isEmpty())
+	{
+		std::cout << "Danh sach rong. Nhan phim bat ky de quay lai . . .";
+		_getch();
+		return;
+	}
+
+	//if list has only one element
+	if (list->getSize() == 1)
+	{
+		return;
+	}
+
+	Student ** studentArr = list->getStudentArray();
+	//if studentArr is empty
+	if (studentArr == NULL)
+	{
+		std::cout << "Danh sach rong. Nhan phim bat ky de quay lai . . .";
+		_getch();
+		return;
+	}
+
+	switch (sortField)
+	{
+	case SortField::NAME:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Name currentName = studentArr[i]->getFullName();
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentName.compare(studentArr[j]->getName()) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::STUDENT_ID:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareStudentID(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::STUDY_CLASS:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareStudyClass(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::DATE_OF_BIRTH:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareDateOfBirth(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::GPA:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareGPA(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	}
+
+
 }
 
 void mergeSort(StudentList * list, SortField sortField)
 {
+	if (list->isEmpty())
+	{
+		std::cout << "Danh sach rong. Nhan phim bat ky de quay lai . . .";
+		_getch();
+		return;
+	}
+
+	//if list has only one element
+	if (list->getSize() == 1)
+	{
+		return;
+	}
+
+	Student ** studentArr = list->getStudentArray();
+	//if studentArr is empty
+	if (studentArr == NULL)
+	{
+		std::cout << "Danh sach rong. Nhan phim bat ky de quay lai . . .";
+		_getch();
+		return;
+	}
+
+	switch (sortField)
+	{
+	case SortField::NAME:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Name currentName = studentArr[i]->getFullName();
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentName.compare(studentArr[j]->getName()) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::STUDENT_ID:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareStudentID(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::STUDY_CLASS:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareStudyClass(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::DATE_OF_BIRTH:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareDateOfBirth(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::GPA:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareGPA(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	}
 }
 
 void heapSort(StudentList * list, SortField sortField)
 {
+	if (list->isEmpty())
+	{
+		std::cout << "Danh sach rong. Nhan phim bat ky de quay lai . . .";
+		_getch();
+		return;
+	}
+
+	//if list has only one element
+	if (list->getSize() == 1)
+	{
+		return;
+	}
+
+	Student ** studentArr = list->getStudentArray();
+	//if studentArr is empty
+	if (studentArr == NULL)
+	{
+		std::cout << "Danh sach rong. Nhan phim bat ky de quay lai . . .";
+		_getch();
+		return;
+	}
+
+	switch (sortField)
+	{
+	case SortField::NAME:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Name currentName = studentArr[i]->getFullName();
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentName.compare(studentArr[j]->getName()) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::STUDENT_ID:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareStudentID(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::STUDY_CLASS:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareStudyClass(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::DATE_OF_BIRTH:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareDateOfBirth(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	case SortField::GPA:
+	{
+		for (int i = 1; i < list->getSize(); i++)
+		{
+			//find the correct position of the student at position i
+			Student currentStudent = *(studentArr[i]);
+			int j = i - 1;
+			while (j >= 0)
+			{
+				if (currentStudent.compareGPA(studentArr[j]) < 0)
+				{
+					*(studentArr[j + 1]) = *(studentArr[j]);
+					j--;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if (j != i - 1)
+			{
+				*(studentArr[j + 1]) = currentStudent;
+			}
+		}
+
+		break;
+	}
+
+	}
 }
 
 void selectionSortStudyClass(StudentList * list)

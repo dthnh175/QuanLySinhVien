@@ -13,6 +13,8 @@ void swap(Student ** student1, Student ** student2);
 
 void selectionSort(StudentList * list, SortField sortField);
 void insertionSort(StudentList * list, SortField sortField);
+int partition(Student** arr, int low, int high, SortField sortField);
+void quickSort(Student** arr, int low, int high, SortField sortField);
 void quickSort(StudentList * list, SortField sortField);
 void mergeSort(StudentList * list, SortField sortField);
 void heapSort(StudentList * list, SortField sortField);

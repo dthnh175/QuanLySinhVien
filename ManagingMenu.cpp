@@ -110,13 +110,14 @@ Menu * createSearchAlgoMenu()
 Menu * createStatMenu()
 {
 	std::string menuTitle = "CHON PHUONG THUC THONG KE";
-	std::string statMenuItem[3] = 
+	const int menuSize = 3;
+	std::string statMenuItem[menuSize] = 
 	{
-		"1. Phan tram xep loai hoc tap theo lop",
-		"2. Tong so sinh vien theo lop",
+		"1. Thong ke so luong sinh vien theo lop",
+		"2. Thong ke phan loai ket qua hoc tap",
 		"3. Quay lai"
 	};
-	Menu * statMenu = new Menu(menuTitle, 3, statMenuItem);
+	Menu * statMenu = new Menu(menuTitle, menuSize, statMenuItem);
 	return statMenu;
 }
 

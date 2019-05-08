@@ -70,3 +70,17 @@ int Name::compare(Name * anotherName)
 
 	return 0;
 }
+
+//int pivot = arr[high];    // pivot
+//int left = low;
+//int right = high - 1;
+//while (true) {
+//	while (left <= right && arr[left] < pivot) left++; // find element >= arr[pivot]
+//	while (right >= left && arr[right] > pivot) right--; // find element <= arr[pivot]
+//	if (left >= right) break; //	if done then exit
+//	swap(&arr[left], &arr[right]); // if not done, swap
+//	left++; // because the current left has been detected then increase
+//	right--; //
+//}
+//swap(&arr[left], &arr[high]);
+//return left; // return the index for dividing array.
